@@ -1,6 +1,8 @@
 # runtime-cli
 Command line tools for `runtime.js`.
 
+[![Build Status](https://travis-ci.org/runtimejs/cli.svg?branch=master)](https://travis-ci.org/runtimejs/cli)
+
 ### Installation
 
 ```
