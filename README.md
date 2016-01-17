@@ -2,6 +2,7 @@
 Command line tools for `runtime.js`.
 
 [![Build Status](https://travis-ci.org/runtimejs/runtime-cli.svg?branch=master)](https://travis-ci.org/runtimejs/runtime-cli)
+[![npm](https://img.shields.io/npm/v/runtime-cli.svg)](https://www.npmjs.com/package/runtime-cli)
 
 ### Installation
 
