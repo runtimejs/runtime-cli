@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:runtimejs/cli.git"
+    "url": "git@github.com:runtimejs/runtime-cli.git"
   },
   "author": "runtime.js project authors",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/runtimejs/cli/issues"
+    "url": "https://github.com/runtimejs/runtime-cli/issues"
   },
   "homepage": "http://runtimejs.org",
   "dependencies": {
