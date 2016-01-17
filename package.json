@@ -1,0 +1,45 @@
+{
+  "name": "runtime-cli",
+  "version": "2.0.0",
+  "description": "runtime.js cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/index.js",
+    "lint": "eslint ."
+  },
+  "bin": {
+    "runtime": "bin/runtime.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:runtimejs/cli.git"
+  },
+  "author": "runtime.js project authors",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/runtimejs/cli/issues"
+  },
+  "homepage": "http://runtimejs.org",
+  "dependencies": {
+    "buffer-crc32": "^0.2.5",
+    "chalk": "^1.1.1",
+    "chokidar": "^1.4.2",
+    "gunzip-maybe": "^1.2.1",
+    "ignore": "^2.2.19",
+    "minimist": "^1.2.0",
+    "pad": "^1.0.0",
+    "pretty-bytes": "^2.0.1",
+    "progress-stream": "^1.1.1",
+    "request": "^2.65.0",
+    "shelljs": "^0.5.3",
+    "single-line-log": "^1.0.1",
+    "streamifier": "^0.1.1",
+    "tabtab": "github:mklabs/node-tabtab"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-runtime": "^1.0.0",
+    "eslint-plugin-runtime-internal": "0.0.0",
+    "tape": "^4.4.0"
+  }
+}

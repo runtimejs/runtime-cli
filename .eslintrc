@@ -1,0 +1,8 @@
+extends:
+  - runtime
+
+plugins:
+  - runtime-internal
+
+rules:
+  no-unused-vars: [2, {"args": "none"}]
