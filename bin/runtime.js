@@ -18,6 +18,7 @@ var parseArgs = require('minimist');
 var pad = require('pad');
 var chalk = require('chalk');
 var tabtab = require('tabtab');
+var version = require('../package.json').version;
 
 var packArgs = [
   { name: 'list-files', type: 'boolean', default: false,
@@ -132,6 +133,11 @@ var command = args[0];
 
 if (command === 'help' || command === '--help') {
   help();
+  return;
+}
+
+if (command === '--version') {
+  console.log(version);
   return;
 }
 
