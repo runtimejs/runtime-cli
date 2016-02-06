@@ -37,6 +37,16 @@ test('package ramdisk: ok, list files', function(t) {
   })
 });
 
+test('package ramdisk: custom entry point', function(t) {
+  runtimePack({
+    _: [path.resolve(__dirname, 'project-ok')],
+    entry: './custom'
+  }, function(err) {
+    t.ok(!err);
+    t.end();
+  })
+});
+
 test('package ramdisk: no runtime js', function(t) {
   runtimePack({
     _: [path.resolve(__dirname, 'project-no-runtimejs')]

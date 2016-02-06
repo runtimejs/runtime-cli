@@ -41,6 +41,7 @@ module.exports = function(opts, cb) {
   var coreConfig = null;
   var indexPath = '';
   var indexName = '';
+  var appIndexName = opts.entry || '/';
 
   var files = [];
   try {
@@ -100,5 +101,5 @@ module.exports = function(opts, cb) {
   var out = fs.createWriteStream(pathUtils.resolve(output));
   out.once('finish', cb);
   out.once('error', cb);
-  initrdPack(out, bundle, coreConfig, indexName, '/index.js');
+  initrdPack(out, bundle, coreConfig, indexName, appIndexName);
 };
