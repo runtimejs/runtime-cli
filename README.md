@@ -89,8 +89,8 @@ Arguments:
 Enables tab-completion for all commands.
 
 ```
-npm completion >> ~/.bashrc
-npm completion >> ~/.zshrc
+runtime completion >> ~/.bashrc
+runtime completion >> ~/.zshrc
 ```
 
 ### License
