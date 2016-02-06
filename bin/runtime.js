@@ -19,6 +19,15 @@ var pad = require('pad');
 var chalk = require('chalk');
 var tabtab = require('tabtab');
 
+var packArgs = [
+  { name: 'list-files', type: 'boolean', default: false,
+    description: 'List packaged files only' },
+  { name: 'ignore', type: 'string', default: '',
+    description: 'Add file ignore pattern' },
+  { name: 'entry', type: 'string', default: '/',
+    description: 'Set entry point import/require string (defaults to "/")' }
+];
+
 var runArgs = [
   { name: 'net', type: 'string', default: 'user',
     description: 'Enable network (value can be "none", "user", "tap" or\n"bridge", defaults to "user")' },
@@ -49,20 +58,15 @@ var runArgs = [
 var cmds = [{
   name: 'start',
   description: 'Quickly start runtime.js VM using current directory',
-  args: runArgs
+  args: runArgs.concat(packArgs)
 }, {
   name: 'watch',
   description: 'Watch current directory and automatically restart runtime.js VM',
-  args: runArgs
+  args: runArgs.concat(packArgs)
 }, {
   name: 'pack',
   description: 'Package specified directory into ramdisk bundle',
-  args: [
-    { name: 'list-files', type: 'boolean', default: false,
-      description: 'List packaged files only' },
-    { name: 'ignore', type: 'string', default: '',
-      description: 'Add file ignore pattern' }
-  ],
+  args: packArgs,
   mainArg: { name: 'directory', description: 'Directory to package' }
 }, {
   name: 'run',
