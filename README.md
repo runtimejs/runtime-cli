@@ -82,6 +82,7 @@ USAGE: runtime pack [<args>] <directory>
 Arguments:
   --list-files  List packaged files only
   --ignore      Add file ignore pattern
+  --entry       Set entry point import/require string (defaults to "/")
 ```
 
 ### Completion
