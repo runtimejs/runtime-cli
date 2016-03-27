@@ -41,7 +41,16 @@ module.exports = function(kernelVersion, shouldBeLocal, cb) {
     shell.rm('-f', tmpFile);
   }
 
+  var displayName = 'runtime.gz.' + kernelVersion;
   var url = 'https://github.com/runtimejs/builds/raw/master/runtime.gz.' + kernelVersion;
+
+  // Newer versions are stored as GitHub releases
+  if (kernelVersion > 3) {
+    var tag = ((kernelVersion >>> 20) & 0x3ff) + '.' + ((kernelVersion >>> 10) & 0x3ff) + '.' + (kernelVersion & 0x3ff);
+    displayName = 'release v' + tag;
+    url = 'https://github.com/runtimejs/runtime/releases/download/v' + tag + '/runtime.gz';
+  }
+
   var req = request(url);
 
   req.on('response', function(res) {
@@ -74,13 +83,13 @@ module.exports = function(kernelVersion, shouldBeLocal, cb) {
         var right = 50 - left;
 
         var progressBar = '[' + Array(left + 1).join('=') + '>' + Array(right).join(' ') + ']';
-        log('Downloading runtime.gz.' + kernelVersion + '...\n' + progressBar + ' ' + value + '% of ' + prettyBytes(totalLength) + '');
+        log('Downloading ' + displayName + '...\n' + progressBar + ' ' + value + '% of ' + prettyBytes(totalLength) + '');
       });
 
       stream = stream.pipe(progress);
     }
 
-    log('Downloading runtime.' + kernelVersion + '.gz...');
+    log('Downloading ' + displayName + '...');
 
     function complete(err) {
       if (err) {

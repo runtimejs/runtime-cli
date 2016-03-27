@@ -70,7 +70,7 @@ module.exports = function(opts, cb) {
         return null;
       }
 
-      indexPath = pathUtils.resolve(pathUtils.dirname(path), '__loader.js');
+      indexPath = pathUtils.resolve(pathUtils.dirname(path), 'js', '__loader.js');
       indexName = '/' + pathUtils.relative(opts.dir, indexPath);
     }
 
