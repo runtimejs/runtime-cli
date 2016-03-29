@@ -28,7 +28,7 @@ function recursiveWalk(basedir, ignoreList) {
   if (ignoreList && ignoreList.length > 0) {
     ignoreRules.push({
       base: basedir,
-      filter: ignore().addPattern(ignoreList).createFilter()
+      filter: ignore().add(ignoreList).createFilter()
     });
   }
 
@@ -76,10 +76,10 @@ function recursiveWalk(basedir, ignoreList) {
 
     if (entries.indexOf(ignoreFilename) >= 0) {
       var entryPath = pathUtils.join(path, ignoreFilename);
-      var rules = fs.readFileSync(entryPath, 'utf8');
+      var rules = fs.readFileSync(entryPath, 'utf8').toString();
       ignoreRules.push({
         base: accessPath,
-        filter: ignore().addPattern(rules.split('\n')).createFilter()
+        filter: ignore().add(rules).createFilter()
       });
     } else {
       ignoreRules.push(null);
