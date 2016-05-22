@@ -27,6 +27,15 @@ function parseCoreConfig(path) {
   return fileData;
 }
 
+function pathNameFormat(path) {
+  // Convert Windows paths to Unix format
+  if (process.platform === 'win32') {
+    return path.replace(/\\/g, '/');
+  }
+
+  return path;
+}
+
 /**
  * Package directory into initrd bundle
  *
@@ -71,7 +80,7 @@ module.exports = function(opts, cb) {
       }
 
       indexPath = pathUtils.resolve(pathUtils.dirname(path), 'js', '__loader.js');
-      indexName = '/' + pathUtils.relative(opts.dir, indexPath);
+      indexName = '/' + pathNameFormat(pathUtils.relative(opts.dir, indexPath));
     }
 
     var relativePath = pathUtils.relative(opts.dir, path);
@@ -79,7 +88,7 @@ module.exports = function(opts, cb) {
     return {
       path: path,
       relativePath: relativePath,
-      name: '/' + relativePath
+      name: '/' + pathNameFormat(relativePath)
     }
   }).filter(Boolean);
 
