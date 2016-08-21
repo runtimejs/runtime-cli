@@ -50,7 +50,7 @@ function recursiveWalk(basedir, ignoreList) {
 
     if (stats.isDirectory()) {
       if (visited[path]) {
-        throw 'file system loop detected';
+        throw 'file system loop detected, path "' + path + '"';
       }
 
       visited[path] = true;

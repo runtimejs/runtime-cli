@@ -26,7 +26,9 @@ var packArgs = [
   { name: 'ignore', type: 'string', default: '',
     description: 'Add file ignore pattern' },
   { name: 'entry', type: 'string', default: '/',
-    description: 'Set entry point import/require string (defaults to "/")' }
+    description: 'Set entry point import/require string (defaults to "/")' },
+  { name: 'add-dir', type: 'string', default: '',
+    description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' }
 ];
 
 var runArgs = [

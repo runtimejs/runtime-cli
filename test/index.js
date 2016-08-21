@@ -60,7 +60,7 @@ test('package ramdisk: multiple runtime js copies', function(t) {
   runtimePack({
     _: [path.resolve(__dirname, 'project-multiple-runtimejs')]
   }, function(err) {
-    t.equal(err, 'directory contains multiple copies of the runtime.js library');
+    t.ok(err.indexOf('found two copies of the runtime.js library') === 0);
     t.end();
   })
 });

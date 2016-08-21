@@ -26,20 +26,61 @@ module.exports = function(args, cb) {
     return cb('invalid directory specified');
   }
 
-  try {
-    fs.statSync(dir);
-  } catch (e) {
-    return cb('directory "' + dir + '" does not exist');
+  var addDirs = [];
+  if (args['add-dir']) {
+    addDirs = Array.isArray(args['add-dir']) ? args['add-dir'] : [args['add-dir']];
   }
+
+  var dirs = [{
+    dir: dir,
+    packagePath: ''
+  }].concat(addDirs.map(function(d) {
+    var parts = String(d).split(':');
+    if (parts.length === 1) {
+      return {
+        dir: path.resolve(parts[0]),
+        packagePath: '/' + path.basename(parts[0])
+      };
+    }
+
+    return {
+      dir: path.resolve(parts[0]),
+      packagePath: parts[1]
+    };
+  }));
+
+  dirs.forEach(function(d) {
+    try {
+      fs.statSync(d.dir);
+    } catch (e) {
+      return cb('directory "' + d.dir + '" does not exist');
+    }
+
+    // Add leading slash
+    if (d.packagePath.slice(0, 1) !== '/') {
+      d.packagePath = '/' + d.packagePath;
+    }
+
+    // Remove trailing slash
+    if (d.packagePath.slice(-1) === '/') {
+      d.packagePath = d.packagePath.slice(0, -1);
+    }
+  });
 
   var ignore = [];
   if (args.ignore) {
     ignore = Array.isArray(args.ignore) ? args.ignore : [args.ignore];
   }
 
+  var verbose = !!args.verbose;
+
   require('../pack')({
     dir: dir,
+    dirs: dirs,
     listFiles: args['list-files'],
-    ignore: ignore
+    ignore: ignore,
+    verbose: verbose,
+    entry: args.entry,
+    systemEntry: args['system-entry']
   }, cb);
 };

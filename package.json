@@ -4,7 +4,7 @@
   "description": "runtime.js cli",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/index.js && npm run lint",
+    "test": "tape test/index.js test/package-tests.js && npm run lint",
     "lint": "eslint ."
   },
   "bin": {
@@ -40,6 +40,7 @@
     "eslint": "^1.10.3",
     "eslint-config-runtime": "^1.0.0",
     "eslint-plugin-runtime-internal": "^1.0.0",
+    "mock-fs": "^3.11.0",
     "tape": "^4.4.0"
   }
 }

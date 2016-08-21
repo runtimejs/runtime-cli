@@ -53,15 +53,38 @@ module.exports = function(opts, cb) {
   var appIndexName = opts.entry || '/';
 
   var files = [];
-  try {
-    files = recursive(opts.dir, opts.ignore);
-  } catch (e) {
-    return cb(e);
-  }
+
+  opts.dirs.forEach(function(d) {
+    var f = [];
+    if (opts.verbose) {
+      process.stdout.write('Adding directory "' + d.dir + '" (at "' + d.packagePath + '")... ');
+    }
+
+    try {
+      f = recursive(d.dir, opts.ignore);
+    } catch (e) {
+      return cb(e);
+    }
+
+    if (opts.verbose) {
+      console.log(f.length + ' files')
+    }
+
+    files = files.concat(f.map(function(fl) {
+      return {
+        path: fl,
+        dir: d.dir,
+        packagePath: d.packagePath
+      };
+    }));
+  });
 
   var filesError = null;
+  var foundLibPath = '';
 
-  var bundle = files.map(function(path) {
+  var bundle = files.map(function(fileData) {
+    var packagePath = fileData.packagePath;
+    var path = fileData.path;
     var baseName = pathUtils.basename(path);
     if (dotFileRegex.test(baseName)) {
       return null;
@@ -69,26 +92,36 @@ module.exports = function(opts, cb) {
 
     if (baseName === 'runtimecorelib.json') {
       if (coreConfig) {
-        filesError = 'directory contains multiple copies of the runtime.js library';
+        filesError = 'found two copies of the runtime.js library at "' + foundLibPath + '" and "' + pathUtils.dirname(path) + '"';
         return null;
       }
 
       coreConfig = parseCoreConfig(path);
       if (!coreConfig || !coreConfig.kernelVersion) {
-        filesError = 'unable to read runtime.js library config';
+        filesError = 'unable to read runtime.js library config "' + path + '"';
         return null;
       }
 
-      indexPath = pathUtils.resolve(pathUtils.dirname(path), 'js', '__loader.js');
-      indexName = '/' + pathNameFormat(pathUtils.relative(opts.dir, indexPath));
+      foundLibPath = pathUtils.dirname(path);
+      if (opts.systemEntry) {
+        indexPath = pathUtils.resolve(opts.systemEntry);
+        indexName = opts.systemEntry;
+      } else {
+        indexPath = pathUtils.resolve(pathUtils.dirname(path), 'js', '__loader.js');
+        indexName = packagePath + '/' + pathNameFormat(pathUtils.relative(fileData.dir, indexPath));
+      }
+
+      if (opts.verbose) {
+        console.log('System entry point "' + indexName + '"');
+      }
     }
 
-    var relativePath = pathUtils.relative(opts.dir, path);
+    var relativePath = pathUtils.relative(fileData.dir, path);
 
     return {
       path: path,
       relativePath: relativePath,
-      name: '/' + pathNameFormat(relativePath)
+      name: packagePath + '/' + pathNameFormat(relativePath)
     }
   }).filter(Boolean);
 
@@ -108,7 +141,13 @@ module.exports = function(opts, cb) {
   }
 
   var out = fs.createWriteStream(pathUtils.resolve(output));
-  out.once('finish', cb);
+  out.once('finish', function() {
+    cb(null, {
+      bundle: bundle,
+      indexName: indexName,
+      appIndexName: appIndexName
+    });
+  });
   out.once('error', cb);
   initrdPack(out, bundle, coreConfig, indexName, appIndexName);
 };
