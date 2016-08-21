@@ -51,10 +51,15 @@ module.exports = function(opts, cb) {
   var indexPath = '';
   var indexName = '';
   var appIndexName = opts.entry || '/';
+  var isRecursiveErrored = false;
 
   var files = [];
 
   opts.dirs.forEach(function(d) {
+    if (isRecursiveErrored) {
+      return;
+    }
+
     var f = [];
     if (opts.verbose) {
       process.stdout.write('Adding directory "' + d.dir + '" (at "' + d.packagePath + '")... ');
@@ -63,7 +68,9 @@ module.exports = function(opts, cb) {
     try {
       f = recursive(d.dir, opts.ignore);
     } catch (e) {
-      return cb(e);
+      isRecursiveErrored = true;
+      cb(e);
+      return;
     }
 
     if (opts.verbose) {
@@ -78,6 +85,10 @@ module.exports = function(opts, cb) {
       };
     }));
   });
+
+  if (isRecursiveErrored) {
+    return;
+  }
 
   var filesError = null;
   var foundLibPath = '';
@@ -126,18 +137,21 @@ module.exports = function(opts, cb) {
   }).filter(Boolean);
 
   if (filesError) {
-    return cb(filesError);
+    cb(filesError);
+    return;
   }
 
   if (opts.listFiles) {
     bundle.forEach(function(f) {
       console.log(f.relativePath);
     });
-    return cb(null);
+    cb(null);
+    return;
   }
 
   if (!coreConfig || !indexPath) {
-    return cb('directory does not contain runtime.js library, please run "npm install runtimejs"');
+    cb('directory does not contain runtime.js library, please run "npm install runtimejs"');
+    return;
   }
 
   var out = fs.createWriteStream(pathUtils.resolve(output));
