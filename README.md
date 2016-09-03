@@ -83,6 +83,7 @@ Arguments:
   --list-files  List packaged files only
   --ignore      Add file ignore pattern
   --entry       Set entry point import/require string (defaults to "/")
+  --add-dir     Add a directory into the package (format: <path> or <path>:<package-path>)
 ```
 
 ### Completion
