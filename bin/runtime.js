@@ -55,7 +55,16 @@ var runArgs = [
   { name: 'kernel', type: 'string', default: '',
     description: 'Specify custom kernel binary file to use' },
   { name: 'local', type: 'boolean', default: false,
-    description: 'Download the kernel locally (i.e. in the module\'s directory)' }
+    description: 'Download the kernel locally (i.e. in the module\'s directory)' },
+  { name: 'drive', type: 'string', default: '',
+    description: 'A file to attach as a virtio block device' }
+];
+
+var mkimgArgs = [
+  { name: 'size', type: 'string', default: '1G',
+    description: 'Size of the new image, defaults to 1 gigabyte. See `qemu-img --help` for sizes.\nMust be >= a gigabyte' },
+  { name: 'label', type: 'string', default: 'RUNTIMEJS',
+    description: 'Label of the new image, defaults to "RUNTIMEJS"' }
 ];
 
 var cmds = [{
@@ -80,6 +89,11 @@ var cmds = [{
   name: 'show',
   description: 'Print VM output or log',
   mainArg: { name: 'type', description: 'VM output file to print, can be "log" or "netdump",\ndefaults to "log"' }
+}, {
+  name: 'mkimg',
+  description: 'Easily create a disk image for use with runtime.js',
+  args: mkimgArgs,
+  mainArg: { name: 'filename', description: 'The filename for the newly created disk image including the extension,\ndefault to "disk.img"' }
 }, {
   name: 'help',
   description: 'Print this usage help'

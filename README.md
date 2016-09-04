@@ -21,6 +21,7 @@ Commands:
   pack          Package specified directory into ramdisk bundle
   run           Run runtime.js VM using specified ramdisk bundle
   show          Print VM output or log
+  mkimg         Easily create a disk image for use with runtime.js
   help          Print this usage help
 ```
 
@@ -84,6 +85,21 @@ Arguments:
   --ignore      Add file ignore pattern
   --entry       Set entry point import/require string (defaults to "/")
   --add-dir     Add a directory into the package (format: <path> or <path>:<package-path>)
+```
+
+`mkimg` creates a FAT disk image for use with runtime.js.
+
+```
+USAGE: runtime mkimg [<args>] <filename>
+(Easily create a disk image for use with runtime.js)
+
+  <filename>    The filename for the newly created disk image including the extension,
+                default to "disk.img"
+
+Arguments:
+  --size        Size of the new image, defaults to 1 gigabyte. See `qemu-img --help` for sizes.
+                Must be >= a gigabyte
+  --label       Label of the new image, defaults to "RUNTIMEJS"
 ```
 
 ### Completion

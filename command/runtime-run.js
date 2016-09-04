@@ -53,6 +53,14 @@ module.exports = function(args, cb) {
   var dryRun = !!args['dry-run'];
   var verbose = !!args.verbose;
 
+  var drives = [];
+  if (typeof args.drive === 'string') {
+    drives = [args.drive];
+  }
+  if (args.drive instanceof Array) {
+    drives = args.drive;
+  }
+
   getRuntime(fileData.kernelVer, kernelFile, !!args.local, function(err, runtimeFile) {
     if (err) {
       return cb(err)
@@ -72,7 +80,8 @@ module.exports = function(args, cb) {
       verbose: verbose,
       virtioRng: qemuVirtioRng,
       nographic: qemuNographic,
-      ports: extraPorts.filter(Boolean)
+      ports: extraPorts.filter(Boolean),
+      drives: drives
     }, cb);
   });
 };

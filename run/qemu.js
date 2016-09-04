@@ -107,6 +107,12 @@ function getQemuArgs(opts) {
     a.push('-append "' + opts.append + '"');
   }
 
+  if (opts.drives.length > 0) {
+    for (var i = 0; i < opts.drives.length; i++) {
+      a.push('-drive file="' + opts.drives[i] + '",if=virtio,media=disk,format=raw');
+    }
+  }
+
   return a;
 }
 
