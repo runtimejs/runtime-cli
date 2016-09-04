@@ -49,6 +49,7 @@ module.exports = function(args, cb) {
   var qemuAppend = args.append || '';
   var qemuNographic = !!args.nographic;
   var qemuVirtioRng = !!args['virtio-rng'];
+  var qemuCommandAppend = args['append-qemu'] || '';
 
   var dryRun = !!args['dry-run'];
   var verbose = !!args.verbose;
@@ -67,6 +68,7 @@ module.exports = function(args, cb) {
       netdump: qemuNetdump,
       curses: qemuCurses,
       kvm: qemuKVM,
+      qemuCommandAppend: qemuCommandAppend,
       append: qemuAppend,
       dryRun: dryRun,
       verbose: verbose,

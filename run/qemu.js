@@ -96,6 +96,10 @@ function getQemuArgs(opts) {
     a.push('-no-kvm-irqchip');
   }
 
+  if (opts.qemuCommandAppend) {
+    a.push(String(opts.qemuCommandAppend));
+  }
+
   if (opts.curses) {
     a.push('-curses');
     a.push('-serial file:' + logs.logPath);

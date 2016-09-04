@@ -54,6 +54,8 @@ var runArgs = [
     description: 'Disable graphics, run in command line mode' },
   { name: 'kernel', type: 'string', default: '',
     description: 'Specify custom kernel binary file to use' },
+  { name: 'append-qemu', type: 'string', default: '',
+    description: 'Append qemu command line arguments' },
   { name: 'local', type: 'boolean', default: false,
     description: 'Download the kernel locally (i.e. in the module\'s directory)' }
 ];
