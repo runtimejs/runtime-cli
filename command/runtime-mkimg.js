@@ -18,7 +18,7 @@ var mkimg = require('../mkimg');
 
 module.exports = function(args, cb) {
   if (args._.length === 0) {
-    return cb('no filename specified');
+    args._[0] = 'disk.img';
   }
 
   var filename = String(args._[0]);

@@ -30,6 +30,7 @@ module.exports = function(opts, cb) {
     return cb('unknown/unsupported platform');
   }
 
+  shell.echo(chalk.yellow('warning: it may appear that the process has frozen when creating large disk images'));
   shell.echo(chalk.green(' --- creating image --- '));
 
   exec('qemu-img create ' + opts.filename + ' ' + opts.size, function(code, output) {

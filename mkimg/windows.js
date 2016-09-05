@@ -15,7 +15,46 @@
 'use strict';
 
 var exec = require('../run/shell-exec');
+var path = require('path');
+var os = require('os');
+
+// Some code from generateGUID used from http://stackoverflow.com/a/2117523/6620880
+// Courtesy of broofa on StackOverflow (http://stackoverflow.com/users/109538)
+function generateGUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
 
 module.exports = function(opts, cb) {
-  cb();
+  var guid = generateGUID();
+  var vhdName = os.tmpdir() + path.sep + 'runtime-tmp-vhd-' guid + '.vhd';
+  exec('qemu-img convert -f raw -O vpc ' + opts.filename + ' ' + vhdName, function(code, output) {
+    var tmpScriptName = os.tmpdir() + path.sep + 'runtime-diskpart-' + guid + '.txt';
+    fs.writeFile(tmpScriptName, [
+      'select vdisk file=' + vhdName,
+      'attach vdisk',
+      'create partition primary',
+      'format fs=fat32 label="' + opts.label + '" quick',
+      'detach vdisk'
+    ].join('\n'), function(err) {
+      if (err) return cb('could not write the disk formatting script');
+      exec('diskpart /s ' + tmpScriptName, function(code, output) {
+        fs.unlink(opts.filename, function(err) {
+          if (err) return cb('could not unlink the old disk image');
+          exec('qemu-img convert -f vpc -O raw ' + vhdName + ' ' + opts.filename, function(code, output) {
+            fs.unlink(vhdName, function(err) {
+              if (err) return cb('could not unlink the temporary vhd image');
+              // try to cleanup:
+              fs.unlink(tmpScriptName, function(err) {
+                // if there's an error, ignore it, it's a temporary file anyway
+                cb();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
 };

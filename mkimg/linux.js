@@ -17,5 +17,12 @@
 var exec = require('../run/shell-exec');
 
 module.exports = function(opts, cb) {
-  cb();
+  exec('losetup -f ' + opts.filename, function(code, output) {
+    var mountpoint = output.trim();
+    exec('mkfs.msdos -F 32 -n "' + opts.label + '" ' + mountpoint, function(code, output) {
+      exec('losetup -d ' + mountpoint, function(code, output) {
+        cb();
+      });
+    });
+  });
 };

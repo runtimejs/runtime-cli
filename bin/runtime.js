@@ -93,7 +93,7 @@ var cmds = [{
   name: 'mkimg',
   description: 'Easily create a disk image for use with runtime.js',
   args: mkimgArgs,
-  mainArg: { name: 'filename', description: 'The filename for the newly created disk image including the extension,\ndefault to "disk.img"' }
+  mainArg: { name: 'filename', description: 'The filename for the newly created disk image including the extension,\ndefaults to "disk.img"' }
 }, {
   name: 'help',
   description: 'Print this usage help'
