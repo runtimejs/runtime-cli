@@ -16,6 +16,23 @@
 
 var mkimg = require('../mkimg');
 
+const multipliers = {
+  'B': 0.001,           // byte
+  'K': 1,               // kilobyte
+  'M': 1000,            // megabyte
+  'G': 1000000,         // gigabyte
+  'T': 1000000000,      // terabyte
+  'P': 1000000000000,   // petabyte
+  'E': 1000000000000000 // exabyte
+};
+const letterRegex = /[A-Za-z]/;
+
+function toKB(size) {
+  var suffix = size.substr(size.length - 1);
+  if (!letterRegex.test(suffix)) suffix = 'B';
+  return parseInt(size, 10) * multipliers[suffix.toUpperCase()];
+}
+
 module.exports = function(args, cb) {
   if (args._.length === 0) {
     args._[0] = 'disk.img';
@@ -24,9 +41,9 @@ module.exports = function(args, cb) {
   var filename = String(args._[0]);
 
   var size = String(args.size);
-  var suffix = size.substr(size.length - 1);
-  if (suffix !== 'G' && suffix !== 'T' && suffix !== 'P' && suffix !== 'E') {
-    return cb('valid sizes are only >= gigabytes (G, T, etc.). see `qemu-img --help` for more sizes');
+  var sizeInKb = toKB(size);
+  if (sizeInKb < 33792) {
+    return cb('invalid size for FAT32. minimum limit of 33792 kb (~33 mb)');
   }
 
   var label = String(args.label).toUpperCase(); // valid names for FAT volumes are upper case

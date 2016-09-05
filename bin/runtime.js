@@ -62,7 +62,7 @@ var runArgs = [
 
 var mkimgArgs = [
   { name: 'size', type: 'string', default: '1G',
-    description: 'Size of the new image, defaults to 1 gigabyte. See `qemu-img --help` for sizes.\nMust be >= a gigabyte' },
+    description: 'Size of the new image, defaults to 1 gigabyte. See `qemu-img --help` for sizes.\nMust be >= 32763 kb (~33 mb)' },
   { name: 'label', type: 'string', default: 'RUNTIMEJS',
     description: 'Label of the new image, defaults to "RUNTIMEJS"' }
 ];

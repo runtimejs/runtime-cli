@@ -98,7 +98,7 @@ USAGE: runtime mkimg [<args>] <filename>
 
 Arguments:
   --size        Size of the new image, defaults to 1 gigabyte. See `qemu-img --help` for sizes.
-                Must be >= a gigabyte
+                Must be >= 33792 kb (~33 mb)
   --label       Label of the new image, defaults to "RUNTIMEJS"
 ```
 

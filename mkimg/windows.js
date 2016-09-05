@@ -29,15 +29,20 @@ function generateGUID() {
 }
 
 const multipliers = {
-  'G': 1000,
-  'T': 1000000,
-  'P': 1000000000,
-  'E': 1000000000000
+  'B': 0.000001,     // byte
+  'K': 0.001,        // kilobyte
+  'M': 1,            // megabyte
+  'G': 1000,         // gigabyte
+  'T': 1000000,      // terabyte
+  'P': 1000000000,   // petabyte
+  'E': 1000000000000 // exabyte
 };
+const letterRegex = /[A-Za-z]/;
 
 function toMB(size) {
   var suffix = size.substr(size.length - 1);
-  return parseInt(size, 10) * multipliers[suffix];
+  if (!letterRegex.test(suffix)) suffix = 'B';
+  return parseInt(size, 10) * multipliers[suffix.toUpperCase()];
 }
 
 module.exports = function(opts, cb) {
