@@ -37,7 +37,7 @@ const multipliers = {
 
 function toMB(size) {
   var suffix = size.substr(size.length - 1);
-  return parseInt(size) * multipliers[suffix];
+  return parseInt(size, 10) * multipliers[suffix];
 }
 
 module.exports = function(opts, cb) {
