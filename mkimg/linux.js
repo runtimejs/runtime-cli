@@ -17,11 +17,13 @@
 var exec = require('../run/shell-exec');
 
 module.exports = function(opts, cb) {
-  exec('losetup -f ' + opts.filename, function(code, output) {
+  exec('losetup -f', function(code, output) {
     var mountpoint = output.trim();
-    exec('mkfs.msdos -F 32 -n "' + opts.label + '" ' + mountpoint, function(code, output) {
-      exec('losetup -d ' + mountpoint, function(code, output) {
-        cb();
+    exec('losetup ' + mountpoint + ' ' + opts.filename, function(code, output) {
+      exec('mkfs.msdos -F 32 -n "' + opts.label + '" ' + mountpoint, function(code, output) {
+        exec('losetup -d ' + mountpoint, function(code, output) {
+          cb();
+        });
       });
     });
   });
