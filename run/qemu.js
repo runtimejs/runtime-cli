@@ -109,7 +109,9 @@ function getQemuArgs(opts) {
 
   if (opts.drives.length > 0) {
     for (var i = 0; i < opts.drives.length; i++) {
-      a.push('-drive file="' + opts.drives[i] + '",if=virtio,media=disk,format=raw');
+      // not wrapping the filename in quotes because the Windows command prompt
+      // doesn't remove the quotes when passing it to QEMU and causes an "invalid argument" error
+      a.push('-drive file=' + opts.drives[i] + ',if=virtio,media=disk,format=raw');
     }
   }
 

@@ -28,30 +28,40 @@ function generateGUID() {
   });
 }
 
+const multipliers = {
+  'G': 1000,
+  'T': 1000000,
+  'P': 1000000000,
+  'E': 1000000000000
+};
+
+function toMB(size) {
+  var suffix = size.substr(size.length - 1);
+  return parseInt(size) * multipliers[suffix];
+}
+
 module.exports = function(opts, cb) {
   var guid = generateGUID();
   var vhdName = os.tmpdir() + path.sep + 'runtime-tmp-vhd-' + guid + '.vhd';
-  exec('qemu-img convert -f raw -O vpc ' + opts.filename + ' ' + vhdName, function(code, output) {
-    var tmpScriptName = os.tmpdir() + path.sep + 'runtime-diskpart-' + guid + '.txt';
-    fs.writeFile(tmpScriptName, [
-      'select vdisk file=' + vhdName,
-      'attach vdisk',
-      'create partition primary',
-      'format fs=fat32 label="' + opts.label + '" quick',
-      'detach vdisk'
-    ].join('\n'), function(err) {
-      if (err) return cb('could not write the disk formatting script');
-      exec('diskpart /s ' + tmpScriptName, function(code, output) {
-        fs.unlink(opts.filename, function(err) {
-          if (err) return cb('could not unlink the old disk image');
-          exec('qemu-img convert -f vpc -O raw ' + vhdName + ' ' + opts.filename, function(code, output) {
-            fs.unlink(vhdName, function(err) {
-              if (err) return cb('could not unlink the temporary vhd image');
-              // try to cleanup:
-              fs.unlink(tmpScriptName, function(err) {
-                // if there's an error, ignore it, it's a temporary file anyway
-                cb();
-              });
+  var tmpScriptName = os.tmpdir() + path.sep + 'runtime-diskpart-' + guid + '.txt';
+  fs.writeFile(tmpScriptName, [
+    'create vdisk file="' + vhdName + '" maximum=' + toMB(opts.size),
+    'attach vdisk',
+    'create partition primary',
+    'format fs=fat32 label="' + opts.label + '" quick',
+    'detach vdisk'
+  ].join('\n'), function(err) {
+    if (err) return cb('could not write the disk formatting script');
+    exec('diskpart /s ' + tmpScriptName, function(code, output) {
+      fs.unlink(opts.filename, function(err) {
+        if (err) return cb('could not unlink the old disk image');
+        exec('qemu-img convert -f vpc -O raw ' + vhdName + ' ' + opts.filename, function(code, output) {
+          fs.unlink(vhdName, function(err) {
+            if (err) return cb('could not unlink the temporary vhd image');
+            // try to cleanup:
+            fs.unlink(tmpScriptName, function(err) {
+              // if there's an error, ignore it, it's a temporary file anyway
+              cb();
             });
           });
         });
