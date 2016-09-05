@@ -17,19 +17,20 @@
 var exec = require('../run/shell-exec');
 var path = require('path');
 var os = require('os');
+var fs = require('fs');
 
 // Some code from generateGUID used from http://stackoverflow.com/a/2117523/6620880
 // Courtesy of broofa on StackOverflow (http://stackoverflow.com/users/109538)
 function generateGUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
 
 module.exports = function(opts, cb) {
   var guid = generateGUID();
-  var vhdName = os.tmpdir() + path.sep + 'runtime-tmp-vhd-' guid + '.vhd';
+  var vhdName = os.tmpdir() + path.sep + 'runtime-tmp-vhd-' + guid + '.vhd';
   exec('qemu-img convert -f raw -O vpc ' + opts.filename + ' ' + vhdName, function(code, output) {
     var tmpScriptName = os.tmpdir() + path.sep + 'runtime-diskpart-' + guid + '.txt';
     fs.writeFile(tmpScriptName, [
