@@ -15,6 +15,7 @@
 'use strict';
 
 var exec = require('../run/shell-exec');
+var testCmd = require('./testCmd');
 var path = require('path');
 var os = require('os');
 var fs = require('fs');
@@ -46,6 +47,8 @@ function toMB(size) {
 }
 
 module.exports = function(opts, cb) {
+  testCmd('diskpart', true);
+
   var guid = generateGUID();
   var vhdName = os.tmpdir() + path.sep + 'runtime-tmp-vhd-' + guid + '.vhd';
   var tmpScriptName = os.tmpdir() + path.sep + 'runtime-diskpart-' + guid + '.txt';

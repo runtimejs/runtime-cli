@@ -17,6 +17,7 @@
 var chalk = require('chalk');
 var shell = require('shelljs');
 var exec = require('../run/shell-exec');
+var testCmd = require('./testCmd');
 
 module.exports = function(opts, cb) {
   var helper;
@@ -29,6 +30,8 @@ module.exports = function(opts, cb) {
   } else {
     return cb('unknown/unsupported platform');
   }
+
+  testCmd('qemu-img', false);
 
   shell.echo(chalk.yellow('warning: it may appear that the process has frozen when creating large disk images'));
   shell.echo(chalk.green(' --- creating image --- '));

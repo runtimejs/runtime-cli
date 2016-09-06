@@ -87,7 +87,7 @@ Arguments:
   --add-dir     Add a directory into the package (format: <path> or <path>:<package-path>)
 ```
 
-`mkimg` creates a FAT disk image for use with runtime.js. On some systems, you may need to use root/administrator privileges.
+`mkimg` creates a FAT disk image for use with runtime.js. On some systems, you may need to use root/administrator privileges. Depends on qemu-img on all platforms, hdiutil and diskutil on macOS (builtin), losetup and mkfs.msdos on Linux (included on most distributions), and diskpart on Windows (bulitin).
 
 ```
 USAGE: runtime mkimg [<args>] <filename>

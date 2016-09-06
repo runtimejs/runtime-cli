@@ -14,21 +14,12 @@
 
 'use strict';
 
-var exec = require('../run/shell-exec');
-var testCmd = require('./testCmd');
+var shell = require('shelljs');
+var chalk = require('chalk');
 
-module.exports = function(opts, cb) {
-  testCmd('losetup', true);
-  testCmd('mkfs.msdos', false);
-
-  exec('losetup -f', function(code, output) {
-    var mountpoint = output.trim();
-    exec('losetup ' + mountpoint + ' ' + opts.filename, function(code, output) {
-      exec('mkfs.msdos -F 32 -n "' + opts.label + '" ' + mountpoint, function(code, output) {
-        exec('losetup -d ' + mountpoint, function(code, output) {
-          cb();
-        });
-      });
-    });
-  });
+module.exports = function(cmd, isBuiltin) {
+  if (!shell.which(cmd)) {
+    shell.echo(chalk.red('error: ' + cmd + ((isBuiltin) ? ' cannot be found' : ' is not installed (or cannot be found)')));
+    return shell.exit(1);
+  }
 };
