@@ -57,7 +57,7 @@ module.exports = function(args, cb) {
   if (typeof args.drive === 'string') {
     drives = [args.drive];
   }
-  if (args.drive instanceof Array) {
+  if (Array.isArray(args.drive)) {
     drives = args.drive;
   }
 
@@ -81,7 +81,7 @@ module.exports = function(args, cb) {
       virtioRng: qemuVirtioRng,
       nographic: qemuNographic,
       ports: extraPorts.filter(Boolean),
-      drives: drives
+      drives: drives.filter(Boolean)
     }, cb);
   });
 };
