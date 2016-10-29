@@ -101,6 +101,18 @@ Arguments:
                 Must be >= 33792 kb (~33 mb)
   --label       Label of the new image, defaults to "RUNTIMEJS"
 ```
+### Environment Variables*
+There is currently no officially supported process for passing environment variables into a runtime instance. There is a work around that will allow the passing of Kernel Command Line arguments instead.
+```
+runtime run --append <your env args> initrd
+```
+To access this variable in your code user the following:
+```
+const wholeString = __SYSCALL.getCommandLine();
+const arrayOfArguments = wholestring.split(' ');
+arrayOfArguments[i]; // where i is the index of your argument inthe array
+```
+*This process is subject to change
 
 ### Completion
 
