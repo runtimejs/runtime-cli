@@ -52,7 +52,7 @@ function getQemuArgs(opts) {
   var a = [
     '-m 512',
     '-smp 1',
-    '-s',
+    //'-s',
     '-kernel ' + kernelPath,
     '-initrd ' + initrdPath,
   ];
@@ -66,7 +66,7 @@ function getQemuArgs(opts) {
       a.push('-net bridge');
       break;
     case 'user':
-      var pushString = '-net user,net=192.168.76.0/24,dhcpstart=192.168.76.9,hostfwd=udp::9000-:9000,hostfwd=tcp::9000-:9000';
+      var pushString = '-net user,net=192.168.76.0/24,dhcpstart=192.168.76.9';//hostfwd=udp::9000-:9000,hostfwd=tcp::9000-:9000';
       for (var i = 0; i < opts.ports.length; i++) {
         pushString += ',hostfwd=udp::' + opts.ports[i] + '-:'+ opts.ports[i] + ',hostfwd=tcp::' + opts.ports[i] + '-:' + opts.ports[i];
       }
