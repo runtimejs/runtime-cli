@@ -50,8 +50,8 @@ function getQemuArgs(opts) {
   }
 
   var a = [
-    '-m 512',
-    '-smp 1',
+    //'-m 512',
+    //'-smp 1',
     //'-s',
     '-kernel ' + kernelPath,
     '-initrd ' + initrdPath,
@@ -95,9 +95,13 @@ function getQemuArgs(opts) {
     a.push('-enable-kvm');
     a.push('-no-kvm-irqchip');
   }
-
+  // if ops.qemuCommandAppend consists of multiple args, append them all
   if (opts.qemuCommandAppend) {
-    a.push(String(opts.qemuCommandAppend));
+    console.log(opts.qemuCommandAppend);
+    for (var key in opts.qemuCommandAppend) {
+      a.push(opts.qemuCommandAppend[key]);
+      console.log(opts.qemuCommandAppend[key]);
+    }
   }
 
   if (opts.curses) {
@@ -118,7 +122,7 @@ function getQemuArgs(opts) {
       a.push('-drive file=' + opts.drives[i] + ',if=virtio,media=disk,format=raw');
     }
   }
-
+  console.log(a);
   return a;
 }
 
