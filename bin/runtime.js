@@ -59,7 +59,9 @@ var runArgs = [
   { name: 'local', type: 'boolean', default: false,
     description: 'Download the kernel locally (i.e. in the module\'s directory)' },
   { name: 'drive', type: 'string', default: '',
-    description: 'A file to attach as a virtio block device' }
+    description: 'A file to attach as a virtio block device' },
+  { name: 'config', type: 'string', default: '',
+    description: 'pass in QEMU configuration options using a <config>.json file'}
 ];
 
 var mkimgArgs = [

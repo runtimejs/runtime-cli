@@ -50,9 +50,9 @@ function getQemuArgs(opts) {
   }
 
   var a = [
-    '-m 512',
-    '-smp 1',
-    '-s',
+    //'-m 512',
+    //'-smp 1',
+    //'-s',
     '-kernel ' + kernelPath,
     '-initrd ' + initrdPath,
   ];
@@ -66,7 +66,7 @@ function getQemuArgs(opts) {
       a.push('-net bridge');
       break;
     case 'user':
-      var pushString = '-net user,net=192.168.76.0/24,dhcpstart=192.168.76.9,hostfwd=udp::9000-:9000,hostfwd=tcp::9000-:9000';
+      var pushString = '-net user,net=192.168.76.0/24,dhcpstart=192.168.76.9';//hostfwd=udp::9000-:9000,hostfwd=tcp::9000-:9000';
       for (var i = 0; i < opts.ports.length; i++) {
         pushString += ',hostfwd=udp::' + opts.ports[i] + '-:'+ opts.ports[i] + ',hostfwd=tcp::' + opts.ports[i] + '-:' + opts.ports[i];
       }
@@ -95,9 +95,13 @@ function getQemuArgs(opts) {
     a.push('-enable-kvm');
     a.push('-no-kvm-irqchip');
   }
-
+  // if ops.qemuCommandAppend consists of multiple args, append them all
   if (opts.qemuCommandAppend) {
-    a.push(String(opts.qemuCommandAppend));
+    console.log(opts.qemuCommandAppend);
+    for (var key in opts.qemuCommandAppend) {
+      a.push(opts.qemuCommandAppend[key]);
+      console.log(opts.qemuCommandAppend[key]);
+    }
   }
 
   if (opts.curses) {
@@ -118,7 +122,7 @@ function getQemuArgs(opts) {
       a.push('-drive file=' + opts.drives[i] + ',if=virtio,media=disk,format=raw');
     }
   }
-
+  console.log(a);
   return a;
 }
 

@@ -16,6 +16,7 @@
 var qemu = require('../run/qemu');
 var getRuntime = require('../run/get-runtime');
 var readInitrd = require('../pack/read-initrd');
+var fs = require('fs');
 
 module.exports = function(args, cb) {
   if (args._.length === 0) {
@@ -31,6 +32,13 @@ module.exports = function(args, cb) {
   var fileData = readInitrd(initrdFile);
   if (!fileData) {
     return cb('ramdisk bundle read error');
+  }
+
+  // If a config.json file exists, parse it to JSON and use it for qemuCommandAppend
+  if ( fs.existsSync('config.json') ) {
+    var configBuffer = fs.readFileSync('config.json');
+    var configJSON = JSON.parse(configBuffer);
+    //console.log(configJSON);
   }
 
   var qemuNet = args.net;
@@ -49,8 +57,8 @@ module.exports = function(args, cb) {
   var qemuAppend = args.append || '';
   var qemuNographic = !!args.nographic;
   var qemuVirtioRng = !!args['virtio-rng'];
-  var qemuCommandAppend = args['append-qemu'] || '';
-
+  var qemuCommandAppend = configJSON || args['append-qemu'] || '';
+  //console.log(qemuCommandAppend);
   var dryRun = !!args['dry-run'];
   var verbose = !!args.verbose;
 
