@@ -28,7 +28,7 @@ module.exports = function(args, cb) {
 
   var output = '';
   if (args['output']) {
-    ouput = args['output'];
+    output = args['output'];
   }
 
   var addDirs = [];
