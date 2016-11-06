@@ -28,7 +28,9 @@ var packArgs = [
   { name: 'entry', type: 'string', default: '/',
     description: 'Set entry point import/require string (defaults to "/")' },
   { name: 'add-dir', type: 'string', default: '',
-    description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' }
+    description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' },
+  { name: 'output', type: 'string', default: '',
+    description: 'allow custom naming and location of the .initrd image\n(format: --output <initrd name> or --output <directory/initrd name>'}
 ];
 
 var runArgs = [
@@ -59,9 +61,7 @@ var runArgs = [
   { name: 'local', type: 'boolean', default: false,
     description: 'Download the kernel locally (i.e. in the module\'s directory)' },
   { name: 'drive', type: 'string', default: '',
-    description: 'A file to attach as a virtio block device' },
-  { name: 'output', type: 'string', default: '',
-      description: 'allow custom naming and location of the .initrd image (format: --output <initrd name> or --output <directory/initrd name>'}
+    description: 'A file to attach as a virtio block device' }
 ];
 
 var mkimgArgs = [

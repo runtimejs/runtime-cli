@@ -32,7 +32,7 @@ module.exports = function(args, cb) {
   if (!fileData) {
     return cb('ramdisk bundle read error');
   }
-
+  
   var qemuNet = args.net;
 
   var extraPorts = [];
