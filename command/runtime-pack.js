@@ -26,6 +26,11 @@ module.exports = function(args, cb) {
     return cb('invalid directory specified');
   }
 
+  var output = '';
+  if (args.output) {
+    output = args.output;
+  }
+
   var addDirs = [];
   if (args['add-dir']) {
     addDirs = Array.isArray(args['add-dir']) ? args['add-dir'] : [args['add-dir']];
@@ -81,6 +86,7 @@ module.exports = function(args, cb) {
     ignore: ignore,
     verbose: verbose,
     entry: args.entry,
-    systemEntry: args['system-entry']
+    systemEntry: args['system-entry'],
+    output: output
   }, cb);
 };

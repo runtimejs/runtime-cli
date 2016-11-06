@@ -28,7 +28,9 @@ var packArgs = [
   { name: 'entry', type: 'string', default: '/',
     description: 'Set entry point import/require string (defaults to "/")' },
   { name: 'add-dir', type: 'string', default: '',
-    description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' }
+    description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' },
+  { name: 'output', type: 'string', default: '',
+    description: 'Initrd output file (defaults to .initrd)\nformat: --output <initrd name> or --output <directory/initrd name>'}
 ];
 
 var runArgs = [
