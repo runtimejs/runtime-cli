@@ -30,7 +30,7 @@ var packArgs = [
   { name: 'add-dir', type: 'string', default: '',
     description: 'Add a directory into the package (format: <path> or <path>:<package-path>)' },
   { name: 'output', type: 'string', default: '',
-    description: 'allow custom naming and location of the .initrd image\n(format: --output <initrd name> or --output <directory/initrd name>'}
+    description: 'Initrd output file (defaults to .initrd)\nformat: --output <initrd name> or --output <directory/initrd name>'}
 ];
 
 var runArgs = [
